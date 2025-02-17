@@ -15,4 +15,4 @@ def index():
     return render_template("home.html", notes=notes)
 
 if __name__ == '__main__':
-    app.run()
+    app.run(debug=True, use_reloader=False)
