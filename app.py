@@ -1,5 +1,6 @@
+import streamlit as st
 from flask import Flask, render_template, request, redirect, url_for
-
+st.title("Code-Refactoring-and-Bug-Fixing App")
 app = Flask(__name__)
 
 # Store notes in a list
