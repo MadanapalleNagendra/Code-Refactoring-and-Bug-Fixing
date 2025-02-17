@@ -1,19 +1,25 @@
 import streamlit as st
-from flask import Flask, render_template, request, redirect, url_for
-st.title("Code-Refactoring-and-Bug-Fixing App")
-app = Flask(__name__)
 
-# Store notes in a list
-notes = []
+# Store notes in session state so they persist across interactions
+if "notes" not in st.session_state:
+    st.session_state.notes = []
 
-@app.route('/', methods=["GET", "POST"])
-def index():
-    if request.method == "POST":
-        note = request.form.get("note")
-        if note:  # Ensure the note is not empty
-            notes.append(note)
-        return redirect(url_for('index'))  # Redirect to avoid form resubmission
-    return render_template("home.html", notes=notes)
+# Streamlit App UI
+st.title("Note Taking Application")
 
-if __name__ == '__main__':
-    app.run(debug=True, use_reloader=False)
+# Form to add a note
+with st.form("note_form"):
+    note = st.text_input("Add a Note:")
+    submitted = st.form_submit_button("Add Note")
+
+    if submitted and note:
+        st.session_state.notes.append(note)  # Add note to session state
+        st.success("Note added successfully!")
+
+# Display all notes
+st.subheader("Your Notes:")
+if st.session_state.notes:
+    for idx, note in enumerate(st.session_state.notes, 1):
+        st.write(f"{idx}. {note}")
+else:
+    st.write("No notes added yet.")
